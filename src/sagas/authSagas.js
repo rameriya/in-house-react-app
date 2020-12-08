@@ -17,10 +17,9 @@ function* handleLogin(action) {
   const { data } = action.payload
   try {
     const response = yield call(postRequest, URls.LOGIN, data)
-    console.log(response)
-    if (response.data && response.data.token) {
-      setInLocalStorage('token', response.data.token)
-      yield put(loginSuccess(response.data))
+    if (response.data) {
+      setInLocalStorage('token', "#response.data.token")
+      yield put(loginSuccess(data))
       pushNotification(Messages.LOGIN_SUCCESS, 'success', 'TOP_CENTER', 1000)
       history.push('/')
     }
@@ -36,14 +35,13 @@ function* watchLoginRequest() {
 
 function* handleSignUp(action) {
   const { data } = action.payload
+  console.log("HERE")
   try {
     const response = yield call(postRequest, URls.REGISTER, data)
-    console.log(response)
-    if (response.data && response.data.token) {
-      setInLocalStorage('token', response.data.token)
-      yield put(signupSuccess(response.data))
+    if (response.data) {
+      yield put(signupSuccess(data))
       pushNotification(Messages.REGISTER_SUCCESS, 'success', 'TOP_CENTER', 1000)
-      history.push('/')
+      history.push('/login')
     }
   } catch (error) {
     pushNotification(Messages.REGISTER_FAILED, 'error', 'TOP_CENTER', 1000)

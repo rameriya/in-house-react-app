@@ -9,7 +9,6 @@ import { Helmet } from 'react-helmet'
 
 const AuthComponent = (props) => {
   const pathType = props.match.path === '/login' ? 'login' : 'register'
-  console.log(props, 'props in login')
   const handleSignIn = (data) => {
     const { login } = props
     login(data)

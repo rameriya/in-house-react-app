@@ -1,3 +1,4 @@
+import { RESET_AUTH_STATE } from 'actions/Auth/actionTypes'
 import {
   LOGIN_REQUEST,
   LOGIN_REQUEST_SUCCESS,
@@ -6,6 +7,7 @@ import {
   SIGNUP_REQUEST_SUCCESS,
   SIGNUP_REQUEST_FAILURE
 } from 'actions/Auth/actionTypes'
+import {setInLocalStorage} from '../utils/helpers'
 
 const initialState = {
   posts: [],
@@ -16,7 +18,9 @@ const initialState = {
     firstName: null,
     lastName: null,
     preferredCurrency: null,
-    profileImage: null
+    profileImage: null,
+    email: null,
+    password:null
   }
 }
 
@@ -30,7 +34,7 @@ const loginSuccess = (state, action) => {
   return ({
     ...state,
     isLoggingIn: false,
-    user: data.userDetails ? { ...data.userDetails } : { ...state.user }
+    user: data ? { ...data } : { ...state.user }
   })
 }
 
@@ -45,9 +49,18 @@ const registerStart = (state, action) => ({
 })
 
 const registerSuccess = (state, action) => {
+  const userData = {
+    ...action.payload.data,
+    rememberMe:true
+  }
+  setInLocalStorage("remember",JSON.stringify(userData))
   return ({
     ...state,
-    isRegistering: false
+    user:{
+      ...state.user,
+      ...userData
+    },
+    isRegistering: false,
   })
 }
 
@@ -64,6 +77,7 @@ const authReducer = (state = initialState, action) => {
     case SIGNUP_REQUEST: return registerStart(state, action)
     case SIGNUP_REQUEST_SUCCESS: return registerSuccess(state, action)
     case SIGNUP_REQUEST_FAILURE: return registerFailed(state, action)
+    case RESET_AUTH_STATE: return initialState
     default: return state
   }
 }

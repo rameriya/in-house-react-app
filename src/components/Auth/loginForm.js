@@ -82,7 +82,6 @@ const LoginForm = (props) => {
   }
 
   const { auth: { isLoggingIn } } = props
-  console.log(props)
   return (
     <Form autoComplete="off">
       <Grid>

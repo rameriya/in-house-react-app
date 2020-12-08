@@ -19,6 +19,7 @@ const Header = (props) => {
   const handleSignOutClick = () => {
     const { resetAuthState } = props
     removeFromLocalStorage('token')
+    removeFromLocalStorage('remember')
     resetAuthState()
     navigateToRespectivePage('/')
     pushNotification(messages.LOGOUT_SUCCESS, 'success', 'TOP_CENTER', 2000)
