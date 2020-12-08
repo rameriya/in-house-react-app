@@ -15,10 +15,15 @@ import Messages from 'constants/messages'
 
 function* handleLogin(action) {
   const { data } = action.payload
+  const authData = {
+    email: data.email,
+    password: data.password,
+    returnSecureToken: true
+  }
   try {
-    const response = yield call(postRequest, URls.LOGIN, data)
-    if (response.data) {
-      setInLocalStorage('token', "#response.data.token")
+    const response = yield call(postRequest, URls.LOGIN, authData)
+    if (response.data && response.data.idToken) {
+      setInLocalStorage('token', response.data.idToken)
       yield put(loginSuccess(data))
       pushNotification(Messages.LOGIN_SUCCESS, 'success', 'TOP_CENTER', 1000)
       history.push('/')
@@ -35,9 +40,13 @@ function* watchLoginRequest() {
 
 function* handleSignUp(action) {
   const { data } = action.payload
-  console.log("HERE")
+  const authData = {
+    email: data.email,
+    password: data.password,
+    returnSecureToken: true
+  }
   try {
-    const response = yield call(postRequest, URls.REGISTER, data)
+    const response = yield call(postRequest, URls.REGISTER, authData)
     if (response.data) {
       yield put(signupSuccess(data))
       pushNotification(Messages.REGISTER_SUCCESS, 'success', 'TOP_CENTER', 1000)

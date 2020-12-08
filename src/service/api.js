@@ -6,11 +6,8 @@ import env from 'utils/env_variables'
 
 const axiosAuth = axios.create({
   baseURL: env.BASE_URL,
-  withCredentials: false,
-  crossDomain: true,
   headers: {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*'
+    'Content-Type': 'application/json'
   }
 })
 
